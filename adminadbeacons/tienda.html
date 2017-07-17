@@ -126,22 +126,13 @@
                     model: {
                         id: "Id",
                         fields: {
-                            // default Everlive fields
-                            // CreatedBy:  { type: "string" },
-                            // CreatedAt:  { type: "date" },
-                            // ModifiedAt: { type: "date" },
-                            //timestamp: { type: "date" }
+                            
                             nombre: { type: "text" },
                             telefono: { type: "text" },
                             contacto: { type: "text" },
                             direccion: { type: "text" },
                            
-                            // type fields
-                            // Freight:    { type: "number" },
-                            // OrderDate:  { type: "date" },
-                            // ShipName:   { type: "string" },
-                            // ShipCity:   { type: "string" }
-                            
+                   
                         }
                     }
                 },
@@ -171,33 +162,12 @@
                     { field: "telefono" },
                     { field: "contacto" },
                     { field: "direccion" },
-                    // { field: "CreatedAt", format: "{0: yyyy-MM-dd HH:mm:ss}"},
-                    // // { field: "CreatedBy" },
-                    // // { field: "ModifiedAt" },
-                    // { field: "Owner" },
-                    // // { field: "ModifiedBy" },
+                    
                     { command: "destroy", width: 150}
                 ],
 
 
-                // columns: [
-                //     {
-                //         field: "Freight",
-                //         width: 100
-                //     }, {
-                //         field: "OrderDate",
-                //         title: "Order Date",
-                //         width: 120,
-                //         format: "{0:MM/dd/yyyy}"
-                //     }, {
-                //         field: "ShipName",
-                //         title: "Ship Name"
-                //     }, {
-                //         field: "ShipCity",
-                //         title: "Ship City",
-                //         width: 150
-                //     }
-                // ]
+               
             });
         });
     </script>
