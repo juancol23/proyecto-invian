@@ -76,7 +76,38 @@
 </body>
 
 
+<<<<<<< HEAD
 <script src="js/jquery-2.1.1.min.js" charset="utf-8"></script>
+=======
+  
+  <script type="text/javascript">
+  
+    function showModal(){
+      $("#reset").val( $("#email").val() );
+      $('#modal1').modal('open');
+    } 
+
+
+  	$("#xxx").on('click', function(){
+    if($("#email").val() && $("#password").val()){
+      var user = {
+          "email": $("#email").val(),
+          "password": $("#password").val(),
+          "grant_type": "password"
+      };
+      $.ajax({
+          type: "POST",
+          url: 'https://api.everlive.com/v1/x7ncbk69r5atfhqt/oauth/token',
+          contentType: "application/json",
+          data: JSON.stringify(user),
+          success: function (data) {
+            var testObject = data;
+            var token = JSON.stringify(testObject.Result.access_token);   
+            console.log(token);   
+          
+            location.href = 'http://localhost/adminadbeacons/dispositivos.html';
+            //sessionStorage.setItem("tokenPlacas", "asd"); 
+>>>>>>> a83fbaa49227c1994405157e4ade31947de39e23
 
 <script src="js/bootstrap.js" ></script>
 <script src="js/cookie.js" ></script>
