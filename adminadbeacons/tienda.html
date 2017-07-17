@@ -1,11 +1,11 @@
-
+(
 
 
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    
+    <script src="js/cookie.js" ></script>
     <base href="http://demos.telerik.com/kendo-ui/grid/everlive">
     <style>html { font-size: 14px; font-family: Arial, Helvetica, sans-serif; }</style>
     <title></title>
@@ -19,6 +19,9 @@
     <script src="https://kendo.cdn.telerik.com/2017.2.621/js/messages/kendo.messages.es-ES.min.js"></script>
     <script src="http://cdn.kendostatic.com/2013.2.716/js/cultures/kendo.culture.es-ES.min.js"></script>
     <script type="text/javascript">kendo.culture("es-ES");</script>
+    <script src="https://bs-static.cdn.telerik.com/latest/everlive.all.min.js"></script>
+
+      
 </head>
     <style>
         
@@ -71,8 +74,8 @@
               padding-top: 80px;
             }
     </style>
-</head>
-<body>
+ 
+<body onload="verificar2()">
  
 <section class="wrapper text-center fondo_blanco">
       <nav>
@@ -88,115 +91,117 @@
           </ul> 
   </nav>
 </section>
+ 
 
-
-
-        <div id="example">
+        <div id="example" >
             <!--[if gte IE 9]>-->
                 <div id="grid"></div>
-            <script src="https://bs-static.cdn.telerik.com/latest/everlive.all.min.js"></script>
-            <script>
-                var everlive = new Everlive({
-                    apiKey: "x7ncbk69r5atfhqt",
-                    scheme: "http"
-                });
 
-                $(document).ready(function() {
-                    // initialize Everlive application with application API key
-                    var dataSource = new kendo.data.DataSource({
-                        autoSync: true,
-                        push: function(e) {
-                            var notification = $("#notification").data("kendoNotification");
-                            notification.success(e.type);
-                        },
-                        type: "everlive",
-                        transport: {
-                            // binding to the Order type in Everlive
-                            typeName: "registros2"
-                        },                        
-                        schema: {
-                            model: {
-                                id: "Id",
-                                fields: {
-                                    // default Everlive fields
-                                    // CreatedBy:  { type: "string" },
-                                    // CreatedAt:  { type: "date" },
-                                    // ModifiedAt: { type: "date" },
-                                    //timestamp: { type: "date" }
-                                    captura: { type: "text" },
-                                    device: { type: "text" }
-                                    image: { type: "text" },
-                                    timestamp: { type: "text" },
-                                   
-                                    // type fields
-                                    // Freight:    { type: "number" },
-                                    // OrderDate:  { type: "date" },
-                                    // ShipName:   { type: "string" },
-                                    // ShipCity:   { type: "string" }
-                                    
-                                }
-                            }
-                        },
-                        serverPaging: true,
-                        pageSize: 20,
-
-                        serverSorting: true,
-                        sort: { field: 'CreatedAt', dir: 'asc' }
-                    });
-
-                    $("#grid").kendoGrid({
-                        dataSource: dataSource,
-                        // height: 430,
-                        toolbar: ["create"],
-                        editable: true,
-                        sortable: true,
-                        groupable: true,
-                      	pageable: {
-                            refresh: true,
-                            pageSizes: true,
-                            buttonCount: 5
-                        },
-                        filterable: true,
-
-                        columns: [
-                            { field: "captura" },
-                            { field: "device" },
-                            { field: "image" },
-                            { field: "timestamp" },
-                            // { field: "CreatedAt", format: "{0: yyyy-MM-dd HH:mm:ss}"},
-                            // // { field: "CreatedBy" },
-                            // // { field: "ModifiedAt" },
-                            // { field: "Owner" },
-                            // // { field: "ModifiedBy" },
-                            { command: "destroy", width: 150}
-                        ],
-
-
-                        // columns: [
-                        //     {
-                        //         field: "Freight",
-                        //         width: 100
-                        //     }, {
-                        //         field: "OrderDate",
-                        //         title: "Order Date",
-                        //         width: 120,
-                        //         format: "{0:MM/dd/yyyy}"
-                        //     }, {
-                        //         field: "ShipName",
-                        //         title: "Ship Name"
-                        //     }, {
-                        //         field: "ShipCity",
-                        //         title: "Ship City",
-                        //         width: 150
-                        //     }
-                        // ]
-                    });
-                });
-            </script>
-            <!--<![endif]-->
         </div>
+ 
+ 
+  
+
+ 
+    <script>
+        var everlive = new Everlive({
+            apiKey: "x7ncbk69r5atfhqt",
+            scheme: "http"
+        });
+
+        $(document).ready(function() {
+            // initialize Everlive application with application API key
+            var dataSource = new kendo.data.DataSource({
+                autoSync: true,
+                push: function(e) {
+                    var notification = $("#notification").data("kendoNotification");
+                    notification.success(e.type);
+                },
+                type: "everlive",
+                transport: {
+                    // binding to the Order type in Everlive
+                    typeName: "registros2"
+                },                        
+                schema: {
+                    model: {
+                        id: "Id",
+                        fields: {
+                            // default Everlive fields
+                            // CreatedBy:  { type: "string" },
+                            // CreatedAt:  { type: "date" },
+                            // ModifiedAt: { type: "date" },
+                            //timestamp: { type: "date" }
+                            captura: { type: "text" },
+                            device: { type: "text" },
+                            image: { type: "text" },
+                            timestamp: { type: "text" },
+                           
+                            // type fields
+                            // Freight:    { type: "number" },
+                            // OrderDate:  { type: "date" },
+                            // ShipName:   { type: "string" },
+                            // ShipCity:   { type: "string" }
+                            
+                        }
+                    }
+                },
+                serverPaging: true,
+                pageSize: 20,
+
+                serverSorting: true,
+                sort: { field: 'CreatedAt', dir: 'asc' }
+            });
+
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                // height: 430,
+                toolbar: ["create"],
+                editable: true,
+                sortable: true,
+                groupable: true,
+                pageable: {
+                    refresh: true,
+                    pageSizes: true,
+                    buttonCount: 5
+                },
+                filterable: true,
+
+                columns: [
+                    { field: "captura" },
+                    { field: "device" },
+                    { field: "image" },
+                    { field: "timestamp" },
+                    // { field: "CreatedAt", format: "{0: yyyy-MM-dd HH:mm:ss}"},
+                    // // { field: "CreatedBy" },
+                    // // { field: "ModifiedAt" },
+                    // { field: "Owner" },
+                    // // { field: "ModifiedBy" },
+                    { command: "destroy", width: 150}
+                ],
 
 
+                // columns: [
+                //     {
+                //         field: "Freight",
+                //         width: 100
+                //     }, {
+                //         field: "OrderDate",
+                //         title: "Order Date",
+                //         width: 120,
+                //         format: "{0:MM/dd/yyyy}"
+                //     }, {
+                //         field: "ShipName",
+                //         title: "Ship Name"
+                //     }, {
+                //         field: "ShipCity",
+                //         title: "Ship City",
+                //         width: 150
+                //     }
+                // ]
+            });
+        });
+    </script>
+    <!--<![endif]-->
     <script>
 
           function tienda(){
@@ -214,5 +219,26 @@
          
     </script>
 
+    <!-- <script src="js/cookie.js" ></script> -->
+   
+    <script>
+     
+     function verificar2(){
+       // console.log(Cookies.get('token')+"token");
+           // alert("token "+Cookies.get('token'));
+            console.log(Cookies.get('token'));
+            if(Cookies.get('token') == null){
+              window.location.replace("http://localhost/adminadbeacons/login.html");
+            } 
+     }
+           
+     
+    </script>
+
+
+
+
+
+
 </body>
-</html>
+</html>)  

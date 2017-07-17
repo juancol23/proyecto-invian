@@ -5,7 +5,6 @@
 	<title>Accediendo</title>
     <link href="css/bootstrap.css" media="screen" rel="stylesheet" type="text/css">
     <link href="css/css.css" media="screen" rel="stylesheet" type="text/css">
-    <script src="https://bs-static.cdn.telerik.com/1.9.4/everlive.all.min.js"></script>
 
  
    
@@ -76,97 +75,92 @@
 
 </body>
 
- 
-  <script src="js/jquery-2.1.1.min.js" charset="utf-8"></script>
-  <script src="js/cookie.js" ></script>
-  <script src="js/bootstrap.js" ></script>
+
+<script src="js/jquery-2.1.1.min.js" charset="utf-8"></script>
+
+<script src="js/bootstrap.js" ></script>
+<script src="js/cookie.js" ></script>
 
   
-  <script type="text/javascript">
-  
-    function showModal(){
-      $("#reset").val( $("#email").val() );
-      $('#modal1').modal('open');
-    } 
+<script type="text/javascript">
+
+  function showModal(){
+  $("#reset").val( $("#email").val() );
+  $('#modal1').modal('open');
+  } 
 
 
-  	$("#xxx").on('click', function(){
-    if($("#email").val() && $("#password").val()){
-      var user = {
-          "email": $("#email").val(),
-          "password": $("#password").val(),
-          "grant_type": "password"
-      };
-      $.ajax({
-          type: "POST",
-          url: 'https://api.everlive.com/v1/rf9kbctkej2y26r2/oauth/token',
-          contentType: "application/json",
-          data: JSON.stringify(user),
-          success: function (data) {
-            var testObject = data;
-            var token = JSON.stringify(testObject.Result.access_token);   
-            console.log(token);   
-          
-            location.href = 'http://localhost/adminadbeacons/dispositivos.html?x='+ token.replace(/"/g,"");
-            //sessionStorage.setItem("tokenPlacas", "asd"); 
+  $("#xxx").on('click', function(){
+  if($("#email").val() && $("#password").val()){
+  var user = {
+  "email": $("#email").val(),
+  "password": $("#password").val(),
+  "grant_type": "password"
+  };
+  $.ajax({
+  type: "POST",
+  url: 'https://api.everlive.com/v1/rf9kbctkej2y26r2/oauth/token',
+  contentType: "application/json",
+  data: JSON.stringify(user),
+  success: function (data) {
+  var testObject = data;
+  var token = JSON.stringify(testObject.Result.access_token);   
+  console.log(token);   
 
-            //guardamos los datos en las cookie
-            Cookies.set('token', token , { expires: 2 });
+  location.href = 'http://localhost/workspace/proyecto-invian/adminadbeacons/tienda.html';
+  //sessionStorage.setItem("tokenPlacas", "asd"); 
 
-
-          },
-          error: function (error) {
-            
-          }
-      }); 
-    }else{
-        
-    }  
-    });
+  //guardamos los datos en las cookie
+  Cookies.set('token', token , { expires: 2 });
 
 
+  },
+  error: function (error) {
 
+  }
+  }); 
+  }else{
 
-function resetPassword(){
-      // alert(123);
-      if($("#reset").val()){
-        var object = {
-          "Email":  $("#reset").val()
-        };
-        $.ajax({
-            type: "POST",
-            url: 'https://api.everlive.com/v1/rf9kbctkej2y26r2/Users/resetpassword',
-            contentType: "application/json",
-            data: JSON.stringify(object),
-            success: function(data) {
-                alert("Password is reset, see your email.");
-            },
-            error: function(error) {
-                var message = JSON.parse(error.responseText);
-                alert(message.message+"\nPlease, train again.");
-            }
-        });
-      }else{
-          
-      } 
+  }  
+  });
+
+  function resetPassword(){
+  // alert(123);
+  if($("#reset").val()){
+  var object = {
+  "Email":  $("#reset").val()
+  };
+  $.ajax({
+    type: "POST",
+    url: 'https://api.everlive.com/v1/rf9kbctkej2y26r2/Users/resetpassword',
+    contentType: "application/json",
+    data: JSON.stringify(object),
+    success: function(data) {
+        alert("Password is reset, see your email.");
+    },
+    error: function(error) {
+        var message = JSON.parse(error.responseText);
+        alert(message.message+"\nPlease, train again.");
     }
+  });
+  }else{
 
+  } 
+  }
+</script>
+<script>
 
-  </script>
-  <script>
-  
-      function tienda(){
-          window.location.replace("http://localhost/adminadbeacons/tienda.html");
-      }
-      function empresas(){
-          window.location.replace("http://localhost/adminadbeacons/empresas.html");
-      }
-      function dispositivos(){
-          window.location.replace("http://localhost/adminadbeacons/dispositivos.html");
-      }
-  </script>
-
+function tienda(){
+window.location.replace("http://localhost/adminadbeacons/tienda.html");
+}
+function empresas(){
+window.location.replace("http://localhost/adminadbeacons/empresas.html");
+}
+function dispositivos(){
+window.location.replace("http://localhost/adminadbeacons/dispositivos.html");
+}
+</script>
+ 
 </html> 
 
-    <!-- ID invian -->
-<!-- vqfkdc51v767oq7x -->
+ 
