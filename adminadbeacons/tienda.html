@@ -120,7 +120,7 @@
                 type: "everlive",
                 transport: {
                     // binding to the Order type in Everlive
-                    typeName: "registros2"
+                    typeName: "tiendas"
                 },                        
                 schema: {
                     model: {
@@ -131,10 +131,10 @@
                             // CreatedAt:  { type: "date" },
                             // ModifiedAt: { type: "date" },
                             //timestamp: { type: "date" }
-                            captura: { type: "text" },
-                            device: { type: "text" },
-                            image: { type: "text" },
-                            timestamp: { type: "text" },
+                            nombre: { type: "text" },
+                            telefono: { type: "text" },
+                            contacto: { type: "text" },
+                            direccion: { type: "text" },
                            
                             // type fields
                             // Freight:    { type: "number" },
@@ -167,10 +167,10 @@
                 filterable: true,
 
                 columns: [
-                    { field: "captura" },
-                    { field: "device" },
-                    { field: "image" },
-                    { field: "timestamp" },
+                    { field: "nombre" },
+                    { field: "telefono" },
+                    { field: "contacto" },
+                    { field: "direccion" },
                     // { field: "CreatedAt", format: "{0: yyyy-MM-dd HH:mm:ss}"},
                     // // { field: "CreatedBy" },
                     // // { field: "ModifiedAt" },
@@ -214,7 +214,7 @@
               window.location.replace("http://localhost/adminadbeacons/dispositivos.html");
           }
            function cerrarS(){
-              window.location.replace("http://localhost/adminadbeacons/login.html");
+              window.location.replace("http://localhost/workspace/proyecto-invian/adminadbeacons/tienda.html");
           }
          
     </script>

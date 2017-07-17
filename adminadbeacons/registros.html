@@ -19,7 +19,7 @@
     <script src="http://cdn.kendostatic.com/2013.2.716/js/cultures/kendo.culture.es-ES.min.js"></script>
     <script type="text/javascript">kendo.culture("es-ES");</script> 
 
-    <script src="redireccion.js"></script>
+ 
 
 <style>
 
@@ -97,7 +97,7 @@
     <script src="https://bs-static.cdn.telerik.com/latest/everlive.all.min.js"></script>
     <script>
         var everlive = new Everlive({
-            apiKey: "vqfkdc51v767oq7x",
+            apiKey: "x7ncbk69r5atfhqt",
             scheme: "http"
         });
 
@@ -112,23 +112,34 @@
                 type: "everlive",
                 transport: {
                     // binding to the Order type in Everlive
-                    typeName: "empresas"
+                    typeName: "registros2"
                 },                        
                 schema: {
                     model: {
                         id: "Id",
                         fields: {
                             // default Everlive fields
-                            CreatedBy:  { type: "string" },
-                            CreatedAt:  { type: "date" },
-                            ModifiedAt: { type: "date" },
+                            // CreatedBy:  { type: "string" },
+                            // CreatedAt:  { type: "date" },
+                            // ModifiedAt: { type: "date" },
                             //timestamp: { type: "date" }
-
+                            age:   { type: "string" },
+                            dwellTime:   { type: "string" },
+                            isView:   { type: "string" },
+                            kind:   { type: "string" },
+                            sex:   { type: "string" },
+                            emotion:   { type: "string" },
+                            timestamp:   { type: "string" },
+                            image:   { type: "string" },
+                            device:   { type: "string" },
+                            captura:   { type: "string" },
+                           
                             // type fields
                             // Freight:    { type: "number" },
+
                             // OrderDate:  { type: "date" },
                             // ShipName:   { type: "string" },
-                            // ShipCity:   { type: "string" }
+                            // ShipCity:   { type: "string" },
                             
                         }
                     }
@@ -155,16 +166,21 @@
                 filterable: true,
 
                 columns: [
-                   { field: "contacto" },
-                    { field: "telefono" },
-                    { field: "razonSocial" },
-                    { field: "ruc" },
-                    { field: "nombreComercial" },
-                    { field: "direccion" },
-                    // { field: "CreatedBy" },
-                    // { field: "ModifiedAt" },
-                    { field: "Owner" },
-                    // { field: "ModifiedBy" },
+                   { field: "age" },
+                   { field: "dwellTime" },
+                   { field: "isView" },
+                   { field: "kind" },
+                   { field: "sex" },
+                   { field: "emotion" },
+                   { field: "timestamp" },
+                   { field: "image" },
+                   { field: "device" },
+                   { field: "captura" },
+                  
+                    // // { field: "CreatedBy" },
+                    // // { field: "ModifiedAt" },
+                    // { field: "Owner" },
+                    // // { field: "ModifiedBy" },
                     { command: "destroy", width: 150}
                 ],
 
@@ -195,7 +211,7 @@
  
 </div>
 
-  <script>q
+  <script> 
   
       function tienda(){
           window.location.replace("http://localhost/adminadbeacons/tienda.html");
