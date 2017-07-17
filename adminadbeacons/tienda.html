@@ -1,0 +1,215 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <base href="http://demos.telerik.com/kendo-ui/grid/everlive">
+    <style>html { font-size: 14px; font-family: Arial, Helvetica, sans-serif; }</style>
+    <title></title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.2.621/styles/kendo.common-material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.2.621/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.2.621/styles/kendo.material.mobile.min.css" />
+
+    <script src="https://kendo.cdn.telerik.com/2017.2.621/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2017.2.621/js/kendo.all.min.js"></script>
+
+    <script src="https://kendo.cdn.telerik.com/2017.2.621/js/messages/kendo.messages.es-ES.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2013.2.716/js/cultures/kendo.culture.es-ES.min.js"></script>
+    <script type="text/javascript">kendo.culture("es-ES");</script>
+</head>
+    <style>
+        
+
+
+            * {
+              padding: 0;
+              margin: 0;
+            }
+            .fondo_blanco{
+                background: black;
+            }
+            p {
+              margin-bottom: 20px;
+            }
+            .wrapper {
+              width: 80%;
+              margin: auto;
+              overflow:hidden;
+            }
+            header {
+              background: rgba(0,0,0,0.9);
+              width: 100%;
+              position: fixed;
+              z-index: 10;
+            }
+
+            nav {
+              float: left; /* Desplazamos el nav hacia la izquierda */
+            }
+            nav ul {
+              list-style: none;
+              overflow: hidden; /* Limpiamos errores de float */
+            }
+            nav ul li {
+              float: left;
+              font-family: Arial, sans-serif;
+              font-size: 16px;
+            }
+            nav ul li a {
+              display: block; /* Convertimos los elementos a en elementos bloque para manipular el padding */
+              padding: 20px;
+              color: #fff;
+              text-decoration: none;
+            }
+            nav ul li:hover {
+              background: #3ead47;
+            }
+            .contenido {
+              padding-top: 80px;
+            }
+    </style>
+</head>
+<body>
+ 
+<section class="wrapper text-center fondo_blanco">
+      <nav>
+          <ul>
+              <li><a onclick="monitoreo()">Monitoreo</a></li>
+              <li><a onclick="tienda()">Tienda</a></li>  
+              <li><a onclick="empresas()">Empresas</a></li>
+              <li><a onclick="cliente()">Cliente</a></li>
+              <li><a onclick="perfil()">Perfil</a></li>
+              <li><a onclick="cerrarS()">Cerrar sesión</a></li> 
+              
+          
+          </ul>
+  </nav>
+</section>
+
+
+
+        <div id="example">
+            <!--[if gte IE 9]>-->
+                <div id="grid"></div>
+            <script src="https://bs-static.cdn.telerik.com/latest/everlive.all.min.js"></script>
+            <script>
+                var everlive = new Everlive({
+                    apiKey: "x7ncbk69r5atfhqt",
+                    scheme: "http"
+                });
+
+                $(document).ready(function() {
+                    // initialize Everlive application with application API key
+                    var dataSource = new kendo.data.DataSource({
+                        autoSync: true,
+                        push: function(e) {
+                            var notification = $("#notification").data("kendoNotification");
+                            notification.success(e.type);
+                        },
+                        type: "everlive",
+                        transport: {
+                            // binding to the Order type in Everlive
+                            typeName: "registros2"
+                        },                        
+                        schema: {
+                            model: {
+                                id: "Id",
+                                fields: {
+                                    // default Everlive fields
+                                    // CreatedBy:  { type: "string" },
+                                    // CreatedAt:  { type: "date" },
+                                    // ModifiedAt: { type: "date" },
+                                    //timestamp: { type: "date" }
+                                    sex: { type: "text" }
+                                   
+                                    // type fields
+                                    // Freight:    { type: "number" },
+                                    // OrderDate:  { type: "date" },
+                                    // ShipName:   { type: "string" },
+                                    // ShipCity:   { type: "string" }
+                                    
+                                }
+                            }
+                        },
+                        serverPaging: true,
+                        pageSize: 20,
+
+                        serverSorting: true,
+                        sort: { field: 'CreatedAt', dir: 'asc' }
+                    });
+
+                    $("#grid").kendoGrid({
+                        dataSource: dataSource,
+                        // height: 430,
+                        toolbar: ["create"],
+                        editable: true,
+                        sortable: true,
+                        groupable: true,
+                      	pageable: {
+                            refresh: true,
+                            pageSizes: true,
+                            buttonCount: 5
+                        },
+                        filterable: true,
+
+                        columns: [
+                            { field: "ip" },
+                            { field: "mac" },
+                            { field: "ubicacion" },
+                            { field: "piso" },
+                            { field: "CreatedAt", format: "{0: yyyy-MM-dd HH:mm:ss}"},
+                            // { field: "CreatedBy" },
+                            // { field: "ModifiedAt" },
+                            { field: "Owner" },
+                            // { field: "ModifiedBy" },
+                            { command: "destroy", width: 150}
+                        ],
+
+
+                        // columns: [
+                        //     {
+                        //         field: "Freight",
+                        //         width: 100
+                        //     }, {
+                        //         field: "OrderDate",
+                        //         title: "Order Date",
+                        //         width: 120,
+                        //         format: "{0:MM/dd/yyyy}"
+                        //     }, {
+                        //         field: "ShipName",
+                        //         title: "Ship Name"
+                        //     }, {
+                        //         field: "ShipCity",
+                        //         title: "Ship City",
+                        //         width: 150
+                        //     }
+                        // ]
+                    });
+                });
+            </script>
+            <!--<![endif]-->
+        </div>
+
+
+    <script>
+
+          function tienda(){
+              window.location.replace("http://localhost/adminadbeacons/tienda.html");
+          }
+          function empresas(){
+              window.location.replace("http://localhost/adminadbeacons/empresas.html");
+          }
+          function dispositivos(){
+              window.location.replace("http://localhost/adminadbeacons/dispositivos.html");
+          }
+           function cerrarS(){
+              window.location.replace("http://localhost/adminadbeacons/login.html");
+          }
+         
+    </script>
+
+</body>
+</html>

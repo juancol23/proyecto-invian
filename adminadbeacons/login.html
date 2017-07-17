@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Accediendo</title>
+    <link href="css/bootstrap.css" media="screen" rel="stylesheet" type="text/css">
+    <link href="css/css.css" media="screen" rel="stylesheet" type="text/css">
+    <script src="https://bs-static.cdn.telerik.com/1.9.4/everlive.all.min.js"></script>
+
+ 
+   
+ 
+</head>
+<body> 
+
+<div class="container">
+
+     <form class="form-signin">
+
+       <img src="images/logo.png" style="width: 100%">
+
+       <label for="inputEmail" class="sr-only">Email</label>
+       <input type="email" id="email" class="form-control" placeholder="Email address" required >
+       <br>
+       <label for="inputPassword" class="sr-only">Password</label>
+       <input type="password" id="password" class="form-control" placeholder="Password" required>      
+       <br>    
+       <ul class="nav nav-pills">
+          <!--  <a id="yyy" onclick="showModal();">Forget password?</a>
+           <a id="xxx" >Login</a> -->           
+       </ul> 
+       <button id="yyy" type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" onclick="showModal();">Forget password?</button>
+       <button id="xxx" type="button" class="btn btn-default text-right">Login</button>
+
+     </form>
+
+   </div> <!-- /container -->
+  
+ 
+ 
+<!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Ingrese correo</h4>
+        </div>
+        <div class="modal-body">
+          
+          <p>Ingrese el correo para reestablecer su contraseña:</p>
+          
+          <input  id="reset" type="email" class="form-control" placeholder="Email address" required > 
+          <label for="reset" class="sr-only">Email</label>
+
+        
+
+        </div>
+        <div class="modal-footer">
+           <button id="xxx" onclick="resetPassword()" type="button" class="btn btn-default text-right">Resetear Constraseña</button>
+        
+
+        </div>
+      </div>
+     </div>
+  </div>
+
+
+ 
+
+
+<!-- Fin Modals -->
+
+
+</body>
+
+ 
+  <script src="js/jquery-2.1.1.min.js" charset="utf-8"></script>
+  <script src="js/cookie.js" ></script>
+  <script src="js/bootstrap.js" ></script>
+
+  
+  <script type="text/javascript">
+  
+    function showModal(){
+      $("#reset").val( $("#email").val() );
+      $('#modal1').modal('open');
+    } 
+
+
+  	$("#xxx").on('click', function(){
+    if($("#email").val() && $("#password").val()){
+      var user = {
+          "email": $("#email").val(),
+          "password": $("#password").val(),
+          "grant_type": "password"
+      };
+      $.ajax({
+          type: "POST",
+          url: 'https://api.everlive.com/v1/rf9kbctkej2y26r2/oauth/token',
+          contentType: "application/json",
+          data: JSON.stringify(user),
+          success: function (data) {
+            var testObject = data;
+            var token = JSON.stringify(testObject.Result.access_token);   
+            console.log(token);   
+          
+            location.href = 'http://localhost/adminadbeacons/dispositivos.html?x='+ token.replace(/"/g,"");
+            //sessionStorage.setItem("tokenPlacas", "asd"); 
+
+            //guardamos los datos en las cookie
+            Cookies.set('token', token , { expires: 2 });
+
+
+          },
+          error: function (error) {
+            
+          }
+      }); 
+    }else{
+        
+    }  
+    });
+
+
+
+
+function resetPassword(){
+      // alert(123);
+      if($("#reset").val()){
+        var object = {
+          "Email":  $("#reset").val()
+        };
+        $.ajax({
+            type: "POST",
+            url: 'https://api.everlive.com/v1/rf9kbctkej2y26r2/Users/resetpassword',
+            contentType: "application/json",
+            data: JSON.stringify(object),
+            success: function(data) {
+                alert("Password is reset, see your email.");
+            },
+            error: function(error) {
+                var message = JSON.parse(error.responseText);
+                alert(message.message+"\nPlease, train again.");
+            }
+        });
+      }else{
+          
+      } 
+    }
+
+
+  </script>
+  <script>
+  
+      function tienda(){
+          window.location.replace("http://localhost/adminadbeacons/tienda.html");
+      }
+      function empresas(){
+          window.location.replace("http://localhost/adminadbeacons/empresas.html");
+      }
+      function dispositivos(){
+          window.location.replace("http://localhost/adminadbeacons/dispositivos.html");
+      }
+  </script>
+
+</html> 
+
+    <!-- ID invian -->
+<!-- vqfkdc51v767oq7x -->
