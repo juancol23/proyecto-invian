@@ -123,7 +123,10 @@
                                     // CreatedAt:  { type: "date" },
                                     // ModifiedAt: { type: "date" },
                                     //timestamp: { type: "date" }
-                                    sex: { type: "text" }
+                                    captura: { type: "text" },
+                                    device: { type: "text" }
+                                    image: { type: "text" },
+                                    timestamp: { type: "text" },
                                    
                                     // type fields
                                     // Freight:    { type: "number" },
@@ -156,15 +159,15 @@
                         filterable: true,
 
                         columns: [
-                            { field: "ip" },
-                            { field: "mac" },
-                            { field: "ubicacion" },
-                            { field: "piso" },
-                            { field: "CreatedAt", format: "{0: yyyy-MM-dd HH:mm:ss}"},
-                            // { field: "CreatedBy" },
-                            // { field: "ModifiedAt" },
-                            { field: "Owner" },
-                            // { field: "ModifiedBy" },
+                            { field: "captura" },
+                            { field: "device" },
+                            { field: "image" },
+                            { field: "timestamp" },
+                            // { field: "CreatedAt", format: "{0: yyyy-MM-dd HH:mm:ss}"},
+                            // // { field: "CreatedBy" },
+                            // // { field: "ModifiedAt" },
+                            // { field: "Owner" },
+                            // // { field: "ModifiedBy" },
                             { command: "destroy", width: 150}
                         ],
 
