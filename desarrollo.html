@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <script src="js/cookie.js"></script>
+    <title></title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.2.621/styles/kendo.common-material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.2.621/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.2.621/styles/kendo.material.mobile.min.css" />
+    <link rel="stylesheet"  href="css/custom.css" /> 
+    <link rel="stylesheet" href="css/bootstrap.css"> 
+ 
+  <link rel="stylesheet" href="css/personalizar.css">
+
+    <script src="https://kendo.cdn.telerik.com/2017.2.621/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2017.2.621/js/kendo.all.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2017.2.621/js/messages/kendo.messages.es-ES.min.js"></script>
+    <script src="http://cdn.kendostatic.com/2013.2.716/js/cultures/kendo.culture.es-ES.min.js"></script>
+
+    <script src="https://bs-static.cdn.telerik.com/latest/everlive.all.min.js"></script>
+
+    <base href="http://demos.telerik.com/kendo-ui/donut-charts/remote-data-binding">
+    <base href="http://demos.telerik.com/kendo-ui/grid/local-data-binding">
+
+    <script type="text/javascript">
+        kendo.culture("es-ES");
+    </script>
+
+    <style>
+       
+    </style>
+</head>
+
+<body id="monitoreo"> 
+        
+    <div class="row">
+            <div class="col-md-2 no-mover" style=" height: 100vh">
+                <section class="wrapper drawer">
+                    <nav>
+                        <ul>
+                            <li><a onclick="home()" class="active">HOME</a>
+                            </li>
+                            <li><a onclick="devices()">DEVICES</a>
+                            </li>
+                            <li><a onclick="create()">CREATE A NEW DEVICE</a>
+                            </li>
+                            <li><a onclick="reports()">REPORTS</a>
+                            </li>
+                            <li><a onclick="setting()">SETTING</a>
+                            </li>
+                            <li><a onclick="cerrarS()">Cerrar sesión</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </section> 
+            </div>
+            <div class="col-md-2"></div>
+ 
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Resumen</h1>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-1" id="grid"></div>  
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div  class="card-1" id="configuraciones"></div>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                 <div class="card-1" id="chart"></div>
+            </div>
+            
+    </div>
+    <script>
+        function devices(){
+                window.location.replace("http://localhost/workspace/proyecto-invian/adminadbeacons-cliente/device.html");
+        }
+    </script>
+
+
+
+    <script>
+        $(document).ready(function() { 
+
+            $("#chart").kendoChart({
+
+                dataSource: {
+                    data: []
+                },
+                title: {
+                    text: "Gráfico de semaforización"
+                },
+                seriesDefaults: {
+                    labels: {
+                        template: "#= kendo.format('{0:P}', percentage)#",
+                        position: "outsideEnd",
+                        visible: true,
+                        background: "transparent"
+                    }
+                },
+                series: [{
+                    type: "donut",
+                    field: "cantidad"
+                }],
+                tooltip: {
+                    visible: true,
+                    template: "#= dataItem.categoria #: #= value #"
+                }
+            }); 
+            var everlive = new Everlive({
+                apiKey: "x7ncbk69r5atfhqt",
+                scheme: "http"
+            });
+            $("#configuraciones").kendoGrid({
+
+                dataSource: {
+                    autoSync: true,
+                    type: "everlive",
+                    transport: {
+                        typeName: "configuraciones",
+                        read: {
+                            url: 'https://api.everlive.com/v1/x7ncbk69r5atfhqt/configuraciones?filter={"cliente":"' + JSON.parse(Cookies.get("cliente")).Id + '"}',
+                            dataType: "jsonp"
+                        }
+                    },
+                    schema: {
+                        model: {
+                            fields: {
+                                cliente: {
+                                    type: "string"
+                                },
+                                horainicio: {
+                                    type: "number"
+                                },
+                                horafin: {
+                                    type: "number"
+                                },
+                                verde: {
+                                    type: "number",
+                                    editable: false
+                                },
+                                amarillo: {
+                                    type: "number"
+                                },
+                                rojo: {
+                                    type: "number"
+                                },
+                            }
+                        }
+                    },
+                    change: function(e) {
+                        var view = this.view();
+                        Cookies.set('configuraciones', view[0], {
+                            expires: 2
+                        });
+                        var grid = $("#grid").data("kendoGrid");
+                        grid.refresh();
+                        grid.trigger("change");
+                        // var chart = $("#chart").data("kendoChart");
+                        // chart.refresh();
+                    }
+                },
+                editable: true,
+                scrollable: false,
+                columns: [{
+                    field: "horainicio"
+                }, {
+                    field: "horafin"
+                }, {
+                    field: "verde",
+                    template: "menor a #=amarillo# min"
+                }, {
+                    field: "amarillo",
+                    template: "entre #=amarillo# y #=rojo# min"
+                }, {
+                    field: "rojo",
+                    template: "mayor a #=rojo# min"
+                }]
+            });
+                
+         
+
+                        $("#grid").kendoGrid({
+
+                            dataSource: {
+                                type: "everlive",
+                                transport: {
+                                    // binding to the Order type in Everlive
+                                    typeName: "dispositivos"
+                                },
+                                schema: {
+                                    model: {
+                                        fields: {
+                                            piso: {
+                                                type: "number"
+                                            },
+                                            ubicacion: {
+                                                type: "string"
+                                            },
+                                            mac: {
+                                                type: "string"
+                                            },
+                                            cliente: {
+                                                type: "string"
+                                            }
+                                        }
+                                    }
+                                },
+                                change: function(e) {
+                                    // var items = this.view();
+                                    // var array = [{
+                                    //         "categoria": "verde",
+                                    //         "cantidad": 0,
+                                    //         "color": "green"
+                                    //     }, {
+                                    //         "categoria": "amarillo",
+                                    //         "cantidad": 0,
+                                    //         "color": "yellow"
+                                    //     }, {
+                                    //         "categoria": "rojo",
+                                    //         "cantidad": 0,
+                                    //         "color": "red"
+                                    //     }],
+                                    //     now = new Date(),
+                                    //     configuraciones = JSON.parse(Cookies.get('configuraciones'));
+                                    // for (var i = 0; i < items.length; i++) {
+                                    //     var ms = (now - items[i].ultimoregistro);
+                                    //     if (now.getHours() >= configuraciones.horainicio && now.getHours() <= configuraciones.horafin) {
+                                    //         switch (true) {
+                                    //             case ms < configuraciones.amarillo * 60000:
+                                    //                 array[0].cantidad++;
+                                    //                 break;
+                                    //             case ms > configuraciones.amarillo * 60000 && ms < configuraciones.rojo * 60000:
+                                    //                 array[1].cantidad++;
+                                    //                 break;
+                                    //             default:
+                                    //                 array[2].cantidad++;
+                                    //                 break;
+                                    //         }
+                                    //     } else {
+
+                                    //     }
+                                    // }
+                                    // var chart = $("#chart").data("kendoChart");
+                                    // var ds = new kendo.data.DataSource({
+                                    //     data: array
+                                    // });
+                                    // chart.setDataSource(ds);
+                                },
+                                // pageSize: 20
+                            },
+                            // detailTemplate: "<div>Name: #: CreatedAt #</div>",
+                            //height: 550, // groupable: true,
+                            scrollable: false,
+                            sortable: true,
+                            filterable: {
+                                mode: "row"
+                            },
+                            change: function(e) {
+                                // var items = this.dataSource.data();
+                                // var array = [{
+                                //         "categoria": "verde",
+                                //         "cantidad": 0,
+                                //         "color": "green"
+                                //     }, {
+                                //         "categoria": "amarillo",
+                                //         "cantidad": 0,
+                                //         "color": "yellow"
+                                //     }, {
+                                //         "categoria": "rojo",
+                                //         "cantidad": 0,
+                                //         "color": "red"
+                                //     }],
+                                //     now = new Date(),
+                                //     configuraciones = JSON.parse(Cookies.get('configuraciones'));
+                                // for (var i = 0; i < items.length; i++) {
+                                //     var ms = (now - items[i].ultimoregistro);
+                                //     if (now.getHours() >= configuraciones.horainicio && now.getHours() <= configuraciones.horafin) {
+                                //         switch (true) {
+                                //             case ms < configuraciones.amarillo * 60000:
+                                //                 array[0].cantidad++;
+                                //                 break;
+                                //             case ms > configuraciones.amarillo * 60000 && ms < configuraciones.rojo * 60000:
+                                //                 array[1].cantidad++;
+                                //                 break;
+                                //             default:
+                                //                 array[2].cantidad++;
+                                //                 break;
+                                //         }
+                                //     } else {
+
+                                //     }
+                                // }
+                                // var chart = $("#chart").data("kendoChart");
+                                // var ds = new kendo.data.DataSource({
+                                //     data: array
+                                // });
+                                // chart.setDataSource(ds);
+                            },
+                            // pageable: {
+                            //     input: true,
+                            //     numeric: false
+                            // },
+
+
+
+                            columns: [{
+                                field: "cliente",
+                                title: "Cliente",
+                                attributes: {
+                                    style: "text-align: center;"
+                                },
+                                filterable: {
+                                    cell: {
+                                        showOperators: false,
+                                        operator: "contains"
+                                    }
+                                },
+                                // template: "mac: #=device#"
+                            },
+                             {
+                                field: "ubicacion",
+                                title: "Ubicación",
+                                attributes: {
+                                    style: "text-align: center;"
+                                },
+                                filterable: {
+                                    cell: {
+                                        showOperators: false,
+                                        operator: "contains"
+                                    }
+                                },
+                                // template: "mac: #=device#"
+                            }, {
+                                field: "piso",
+                                title: "Piso",
+                                filterable: false,
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            }, {
+                                field: "mac",
+                                title: "MAC",
+                                format: "{0:dd MMM yyyy}",
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            }, {
+                                field: "ip",
+                                title: "IP",
+                                filterable: false,
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            }, {
+                                field: "CreatedAt",
+                                title: "Creación",
+                                filterable: false,
+
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            }]
+                            , editable: "popup"
+                            // , editable: true
+
+                        });
+            $("#grid").delegate("tbody>tr", "dblclick", function () {
+                            if (!$(this).hasClass('k-grid-edit-row')) {
+                                $("#grid").data("kendoGrid").editRow($(this));
+                            }
+                        });
+                    });
+                 
+     
+            function monitoreo() {
+                window.location.replace("http://localhost/workspace/proyecto-invian/adminadbeacons-cliente/monitoreo.html");
+            }
+
+            function device() {
+                window.location.replace("http://localhost/workspace/proyecto-invian/adminadbeacons-cliente/device.html");
+            }
+
+            function empresas() {
+                window.location.replace("http://localhost/workspace/proyecto-invian/adminadbeacons-cliente/empresas.html");
+            }
+
+            function clientes() {
+                window.location.replace("http://localhost/workspace/proyecto-invian/adminadbeacons-cliente/clientes.html");
+            }
+
+            function dispositivos() {
+                window.location.replace("http://localhost/workspace/proyecto-invian/adminadbeacons-cliente/dispositivos.html");
+            }
+
+            function cerrarS() {
+                window.location.replace("http://localhost/workspace/proyecto-invian/adminadbeacons-cliente/login.html");
+                Cookies.remove('token');
+            }
+
+            function verificar2() {
+                if (Cookies.get('token') == null) {
+                    window.location.replace("http://localhost/workspace/proyecto-invian/adminadbeacons-cliente/login.html");
+                }
+            }
+    </script> 
+
+
+    <script>
+        
+       
+
+    </script>
+</body>
+
+</html>
